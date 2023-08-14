@@ -1,0 +1,64 @@
+//Basic Hangman by Siddhanth Jagtap
+import java.util.*;
+public class Main {
+    Scanner obj = new Scanner(System.in);
+    public static void main(String[] args) {
+        Main ob = new Main();
+        System.out.println("Hello and welcome!");
+        ob.Basic_Hangman();
+    }
+
+    public void Basic_Hangman() {
+        System.out.println("Rules:"); // Explaining the rules
+        System.out.println("1. Input a word to be guessed (PLAYER 1).");
+        System.out.println("2. PLAYER 2 will try to guess the word, by guessing letter-by-letter.");
+        System.out.println("Note that for every incorrect letter guessed, PLAYER 2 loses a life. There are 7 lives - (HANGMAN).");
+        System.out.println("If PLAYER 2 guesses the word correctly, PLAYER 2 wins.");
+        System.out.println("If PLAYER 2 runs out of lives, PLAYER 1 wins.");
+        String word = "";
+        boolean b = false;
+        while(!b){
+            System.out.println("Enter a word-");
+            word = obj.nextLine().trim().toUpperCase();
+            System.out.println("\u000c");
+            StringTokenizer st = new StringTokenizer(word);
+            if(st.countTokens()>1)
+                System.out.println("Please Enter Only 1 Word.");
+            else
+                b = true;
+        }
+        int len = word.length();
+
+        StringBuilder sb = new StringBuilder();
+        StringBuilder appended = sb.append("_".repeat(len));
+        System.out.println();
+        String guess = appended.toString().trim();
+        System.out.println(guess); // Creates a String with blanks as long as the input word
+
+        int winner = 1;
+        int lives = 7; //HANGMAN
+        while(lives>0){
+            System.out.println("Lives:" + lives);
+            System.out.println("Guess a Letter (Note only first letter will be considered)");
+            char ch = obj.nextLine().toUpperCase().charAt(0);
+            if(!word.contains(ch + "")) {
+                lives --; // Lose a Life for Incorrect Guess
+                System.out.println("Life Lost - Letter Not Present in Word");
+            }
+            else{
+                int traverse = 0;
+                while(traverse<len){
+                    if(word.charAt(traverse)==ch)
+                        guess = guess.substring(0,traverse) + ch + guess.substring(traverse+1) ; // Display the character in position
+                    traverse++;
+                }
+                System.out.println(guess);
+                if(!guess.contains("_")) {
+                    winner = 2;
+                    break;
+                }
+            }
+        }
+        System.out.println("PLAYER " + winner + " wins!");
+    }
+}
